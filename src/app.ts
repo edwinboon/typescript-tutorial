@@ -1,21 +1,7 @@
-// create invoice object
-class Invoice {
-  client: string;
-  details: string;
-  amount: number;
-
-  constructor(client: string, details: string, amount: number) {
-    this.client = client;
-    this.details = details;
-    this.amount = amount;
-  }
-
-  format() : string {
-    return `${this.client} owes €${this.amount} for ${this.details}`
-  }
-}
-
-let invoices: Invoice[] = [];
+import { HasFormatter } from './interfaces/HasFormatter';
+import { Invoice } from './modules/Invoice.js'
+import { ListTemplate } from './modules/ListTemplate.js';
+import { Payment } from './modules/Payment.js';
 
 const form = document.querySelector('.new-item-form') as HTMLFormElement
 
@@ -25,14 +11,16 @@ const toFrom = document.querySelector('#toFrom') as HTMLInputElement;
 const details = document.querySelector('#details') as HTMLInputElement;
 const amount = document.querySelector('#amount') as HTMLInputElement;
 
+// list template instance
+const ul = document.querySelector('.item-list') as HTMLUListElement;
+const list = new ListTemplate(ul);
+
 form.addEventListener('submit', (e: Event) => {
   // prevent default form action
   e.preventDefault();
-  console.log(
-    type.value,
-    toFrom.value,
-    details.value,
-    amount.valueAsNumber,
-  )
+
+  let doc: HasFormatter = type.value === 'invoice' ? new Invoice(toFrom.value, amount.valueAsNumber, details.value) : new Payment(toFrom.value, amount.valueAsNumber, details.value);
+
+  list.render(doc, type.value, 'end');
 
 })
