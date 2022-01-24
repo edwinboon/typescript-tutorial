@@ -19,8 +19,9 @@ form.addEventListener('submit', (e: Event) => {
   // prevent default form action
   e.preventDefault();
 
-  let doc: HasFormatter = type.value === 'invoice' ? new Invoice(toFrom.value, amount.valueAsNumber, details.value) : new Payment(toFrom.value, amount.valueAsNumber, details.value);
+  let values: [string, number, string] = [toFrom.value, amount.valueAsNumber, details.value];
 
+  let doc: HasFormatter = type.value === 'invoice' ? new Invoice(...values) : new Payment(...values);
   list.render(doc, type.value, 'end');
 
 })

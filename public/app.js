@@ -13,6 +13,7 @@ const list = new ListTemplate(ul);
 form.addEventListener('submit', (e) => {
     // prevent default form action
     e.preventDefault();
-    let doc = type.value === 'invoice' ? new Invoice(toFrom.value, amount.valueAsNumber, details.value) : new Payment(toFrom.value, amount.valueAsNumber, details.value);
+    let values = [toFrom.value, amount.valueAsNumber, details.value];
+    let doc = type.value === 'invoice' ? new Invoice(...values) : new Payment(...values);
     list.render(doc, type.value, 'end');
 });
